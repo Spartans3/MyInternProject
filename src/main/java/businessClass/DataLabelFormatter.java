@@ -3,13 +3,14 @@ package businessClass;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
 public class DataLabelFormatter extends AbstractFormatter {
 
-	private String datePattern = "yyyy-MM-dd";
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-M-yyy");
+    // Date dateWithoutTime = dateFormatter.parse(dateFormatter.format(new Date()));
 
     @Override
     public Object stringToValue(String text) throws ParseException {

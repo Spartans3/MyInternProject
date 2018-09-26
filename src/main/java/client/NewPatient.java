@@ -3,8 +3,6 @@ package client;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import java.awt.Color;
-import java.awt.Dimension;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
@@ -12,9 +10,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
-import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -26,10 +22,8 @@ import object.PatientDTO;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.nio.channels.ShutdownChannelGroupException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -43,6 +37,11 @@ import javax.swing.border.LineBorder;
 import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
 
 public class NewPatient {
 
@@ -59,12 +58,13 @@ public class NewPatient {
 	public NewPatient() throws ParseException {
 		initialize();
 	}
-
+	
+	private String tmpString;
 
 	private void initialize() throws ParseException {
 		frmNewPatient = new JFrame();
 		frmNewPatient.setTitle("New Patient Entry");
-		frmNewPatient.setBounds(100, 100, 768, 579);
+		frmNewPatient.setBounds(100, 100, 809, 627);
 		frmNewPatient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmNewPatient.getContentPane().setLayout(null);
 		frmNewPatient.setLocationRelativeTo(null);
@@ -82,15 +82,20 @@ public class NewPatient {
 		
 		JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
 		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DataLabelFormatter());
+		datePanel.setBounds(94,140,220,173);
+		frmNewPatient.getContentPane().add(datePanel, "Today");
 		
 		
 		
-		
-		
-		
-		
-		
-		
+		datePanel.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				String s = datePicker.getJFormattedTextField().getText();
+				tmpString = s;
+				System.out.println("hi" + s);
+
+				
+			}
+		});
 		
 		
 		
@@ -106,24 +111,8 @@ public class NewPatient {
 		btnNewButton.setBounds(610, 16, 127, 45);
 		frmNewPatient.getContentPane().add(btnNewButton);
 		
-		String[] days = {"1","2","3","4","5","6","7","8","9","10","11","12",
-				"13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
-		JComboBox day = new JComboBox(days);
-		day.setBounds(94, 140, 45, 22);
-		frmNewPatient.getContentPane().add(day);
-		
-		String[] months = {"1","2","3","4","5","6","7","8","9","10","11","12"};
-		JComboBox month = new JComboBox(months);
-		month.setBounds(151, 140, 45, 22);
-		frmNewPatient.getContentPane().add(month);
-		
-		String[] years = {"1990","1991","1992","1993","1994","1995","1996","1997","1998","1999",
-				"2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010",
-				"2011","2012","2013","2014","2015","2016","2017","2018"};
-		JComboBox year = new JComboBox(years);
-		year.setBounds(208, 140, 63, 22);
-		frmNewPatient.getContentPane().add(year);
-		
+
+
 		
 		
 		
@@ -145,11 +134,11 @@ public class NewPatient {
         List<String> columns = new ArrayList<String>();
         List<String[]> values = new ArrayList<String[]>();
 
-        columns.add("id");
-        columns.add("name");
-        columns.add("surname");
-        columns.add("tc");
-        columns.add("tel");
+
+        columns.add("Name");
+        columns.add("Surname");
+        columns.add("Tc");
+        columns.add("Tel");
         columns.add("birthday");
 		
 		while(it.hasNext()) {
@@ -159,35 +148,49 @@ public class NewPatient {
 			String data2 = pati.getSurname();
 			String data3 = String.valueOf(pati.getTc());
 			String data4 = String.valueOf(pati.getTel());
-			String id = String.valueOf(pati.getId());
-			String birthday = String.valueOf(pati.getBirthday());
 			
-			String [] row = {id,data1,data2,data3,data4,birthday };
+	         SimpleDateFormat  format = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+	         String birthday = format.format(pati.getBirthday());
+	         birthday = birthday.substring(0, 10);
 			
-			values.add(new String[] {id,data1,data2,data3,data4,birthday});
+			String [] row = {data1,data2,data3,data4,birthday };
+			
+			values.add(new String[] {data1,data2,data3,data4,birthday});
 		}
 		
         TableModel tableModel = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());		
 		table = 	new JTable(tableModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		table.setBackground(Color.LIGHT_GRAY);
-		table.setBounds(12, 261, 534, 258);
+		table.setBounds(12, 326, 534, 241);
+
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+		});
+		scrollPane.setBounds(12, 326, 534, 241);
+		frmNewPatient.getContentPane().add(scrollPane);
 		
-        JButton button_1 = new JButton("DELETE");
-  		button_1.setBounds(558, 261, 179, 258);
-  		frmNewPatient.getContentPane().add(button_1);
-  		button_1.setVisible(true);
-		frmNewPatient.getContentPane().add(table);
+        JButton btnDelete = new JButton("DELETE");
+
+        
+  		btnDelete.setBounds(558, 326, 179, 241);
+  		frmNewPatient.getContentPane().add(btnDelete);
+  		btnDelete.setVisible(true);
+		
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 	              int s =  table.getSelectedRow();
-	              Long id =Long.valueOf((String) table.getValueAt(s, 0)) ;
+	              System.out.println(s);
+	              String tc =(String) table.getValueAt(s, 2) ;
+	              System.out.println(tc);
 	              
 
-	      		button_1.addActionListener(new ActionListener() {
+	      		btnDelete.addActionListener(new ActionListener() {
 	      			public void actionPerformed(ActionEvent e) {
-	      				manager.RemovePatient(id);
+	      				manager.RemovePatient(tc);
 	      				JOptionPane.showMessageDialog(frmNewPatient, "Deleted!", "Message!", 1);
 	      				
 	      			}
@@ -244,13 +247,15 @@ public class NewPatient {
 		telTextField.setColumns(10);
 		telTextField.setBounds(94, 105, 177, 22);
 		frmNewPatient.getContentPane().add(telTextField);
+		telTextField.setText("+90");
 		
-		JButton button = new JButton("ADD");
-		button.addActionListener(new ActionListener() {
+		JButton btnAdd = new JButton("ADD");
+		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy");
+				String a =tmpString;
 				
-				String a = (String) day.getSelectedItem() + "-" + (String) month.getSelectedItem() + "-" + (String) year.getSelectedItem() ;
+				
 				
 				Date date = null;
 				try {
@@ -268,16 +273,38 @@ public class NewPatient {
 			  JOptionPane.showMessageDialog(frmNewPatient,nameTextField.getText() + " "	+ surnameTextField.getText() + " has been added", "Message!", 1);
 			}
 		});
-		button.setBounds(302, 58, 127, 48);
-		frmNewPatient.getContentPane().add(button);
+		btnAdd.setBounds(302, 58, 127, 48);
+		frmNewPatient.getContentPane().add(btnAdd);
 		
 		
 		JLabel lblBirthday = new JLabel("Birthday");
 		lblBirthday.setBounds(12, 143, 56, 16);
 		frmNewPatient.getContentPane().add(lblBirthday);
 		
+		JPopupMenu popupMenu = new JPopupMenu();
+		addPopup(frmNewPatient, popupMenu);
+		popupMenu.add("Medicine Entry");
+		
+		
 
 		
 		
+	}
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 	}
 }

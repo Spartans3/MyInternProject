@@ -25,5 +25,6 @@
         <property name="hibernate.current_session_context_class">thread</property>
 		<mapping class="object.UserDTO"/>
 		<mapping class="object.PatientDTO"/>
+		<mapping class="object.MedicineDTO"/>
 </session-factory>
 </hibernate-configuration>

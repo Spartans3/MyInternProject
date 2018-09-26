@@ -51,5 +51,17 @@ public class MainPage {
 		btnReport.setBounds(414, 68, 114, 25);
 		frmMainPage.getContentPane().add(btnReport);
 		
+		JButton btnNewButton_1 = new JButton("Medicines");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmMainPage.setVisible(false);
+				MedicinePage a = new MedicinePage();
+				
+				
+			}
+		});
+		btnNewButton_1.setBounds(61, 159, 114, 25);
+		frmMainPage.getContentPane().add(btnNewButton_1);
+		
 	}
 }
