@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class name= "object.MedicineOfPatientDTO" table ="medicineofpatient">
+
+	<composite-id name = "pk"  class= "object.MedicineOfPatientIdDTO">
+		<key-property name="patientDTO" column="patientDTO" />
+		<key-property name="medicineDTO" column="patientDTO" />
+	</composite-id>
+	
+	<component name="patientDTO">
+		
+			<many-to-one name="idnewPatient" class="object.PatientDTO"
+				update="false" insert="false">
+				<column name="idnewPatient" not-null="true" />
+			</many-to-one>
+
+		</component>
+		
+		<component name="MedicineDTO">
+		
+			<many-to-one name="idmedicine" class="object.MedicineDTO"
+				update="false" insert="false">
+				<column name="idmedicine" not-null="true" />
+			</many-to-one>
+
+		</component>
+
+	<property name ="quantity" column= "quantity" type="string" />
+	<property name ="treatmentDays" column= "treatmentDays" type="string" />
+	<property name="startDate" column= "startDate" type= "date" />
+	<property name ="daily" column= "daily" type="string" ></property>
+	
+
+
+</class>
+</hibernate-mapping>

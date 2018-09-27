@@ -1,17 +1,22 @@
 package object;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="medicine")
 
 
-public class MedicineDTO {
+public class MedicineDTO implements java.io.Serializable {
 
 	@Id
 	
@@ -30,11 +35,22 @@ public class MedicineDTO {
 	@Column(name="producer")
 	private String producer;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.medicine")
+	private Set<MedicineOfPatientDTO> medicineOfPatient = new HashSet<MedicineOfPatientDTO>(0);
+
 	public void NewMedicine(String name, String barcode, Date expire_date, String producer) {
 		this.name=name;
 		this.barcode=barcode;
 		this.expire_date=expire_date;
 		this.producer=producer;
+	}
+	
+	public void NewMedicine(String name, String barcode, Date expire_date, String producer,Set<MedicineOfPatientDTO> medicineOfPatient ) {
+		this.name=name;
+		this.barcode=barcode;
+		this.expire_date=expire_date;
+		this.producer=producer;
+		this.medicineOfPatient=medicineOfPatient;
 	}
 
 	public long getId() {
@@ -76,9 +92,14 @@ public class MedicineDTO {
 	public void setProducer(String producer) {
 		this.producer = producer;
 	}
-	
-	
-	
-	
+
+	public Set<MedicineOfPatientDTO> getMedicineOfPatient() {
+		return medicineOfPatient;
+	}
+
+	public void setMedicineOfPatient(Set<MedicineOfPatientDTO> medicineOfPatient) {
+		this.medicineOfPatient = medicineOfPatient;
+	}
+
 	
 }

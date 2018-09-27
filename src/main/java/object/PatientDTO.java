@@ -1,16 +1,25 @@
 package object;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name= "newpatient")
 
-public class PatientDTO {
+public class PatientDTO implements java.io.Serializable {
 	
 	@Id
 	
@@ -32,6 +41,9 @@ public class PatientDTO {
 	@Column(name="birthday")
 	private Date birthday;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.newpatient", cascade=CascadeType.ALL)
+	private Set<MedicineOfPatientDTO> medicineOfPatient = new HashSet<MedicineOfPatientDTO>(0);
+	
 	
 	
 	public void NewPatient(String name, String surname, String tc, String tel, Date birthday) {
@@ -40,6 +52,25 @@ public class PatientDTO {
 		this.tc = tc;
 		this.tel = tel;
 		this.birthday = birthday;
+	}
+	
+	public void NewPatient(String name, String surname, String tc, String tel, Date birthday, Set<MedicineOfPatientDTO> medicineOfPatient) {
+		this.name = name;
+		this.surname = surname;
+		this.tc = tc;
+		this.tel = tel;
+		this.birthday = birthday;
+		this.medicineOfPatient = medicineOfPatient;
+	}
+	
+	
+
+	public Set<MedicineOfPatientDTO> getMedicineOfPatient() {
+		return medicineOfPatient;
+	}
+
+	public void setMedicineOfPatient(Set<MedicineOfPatientDTO> medicineOfPatient) {
+		this.medicineOfPatient = medicineOfPatient;
 	}
 
 	public Date getBirthday() {
