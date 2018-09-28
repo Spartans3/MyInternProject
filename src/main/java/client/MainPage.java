@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.awt.event.ActionEvent;
 
+
+
 public class MainPage {
 
 	private JFrame frmMainPage;
@@ -27,21 +29,22 @@ public class MainPage {
 		frmMainPage.setLocationRelativeTo(null);
 		frmMainPage.getContentPane().setLayout(null);
 		
-		JButton btnNewPatient = new JButton("New Patient");
-		btnNewPatient.addActionListener(new ActionListener() {
+		JButton btnPatient = new JButton("Patient");
+		btnPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frmMainPage.setVisible(false);
-				try {
-					NewPatient a = new NewPatient();
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				
+					try {
+						PatientPage a = new PatientPage();
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				
 				}
 		});
-		btnNewPatient.setBounds(61, 68, 114, 25);
-		frmMainPage.getContentPane().add(btnNewPatient);
+		btnPatient.setBounds(61, 68, 114, 25);
+		frmMainPage.getContentPane().add(btnPatient);
 		
 		JButton btnNewButton = new JButton("Discharge");
 		btnNewButton.setBounds(236, 68, 114, 25);

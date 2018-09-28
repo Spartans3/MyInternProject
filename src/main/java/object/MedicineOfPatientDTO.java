@@ -4,10 +4,15 @@ import java.util.Date;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -15,15 +20,23 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="medicineofpatient")
-@AssociationOverrides({
-	@AssociationOverride(name = "pk.medicine", 
-		joinColumns = @JoinColumn(name = "idmedicine")),
-	@AssociationOverride(name = "pk.newpatient", 
-		joinColumns = @JoinColumn(name = "idnewPatient")) })
 
 public class MedicineOfPatientDTO implements java.io.Serializable {
 	
-	private MedicineOfPatientIdDTO pk = new MedicineOfPatientIdDTO();
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY )
+	@Column(name="medicineofpatientId")
+	private long id;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "patientId")
+	private PatientDTO patient;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "medicineId")
+	private MedicineDTO medicine;
+	
 	
 	
 	@Column(name="quantity")
@@ -43,39 +56,8 @@ public class MedicineOfPatientDTO implements java.io.Serializable {
 		
 	}
 	
-	/*
-	public void MedicineOfPatient(String quantity, String treatmentDays, String daily, Date startDate) {
-		this.quantity=quantity;
-		this.treatmentDays=treatmentDays;
-		this.daily=daily;
-		this.startDate=startDate;
-	}
-	*/
-	@EmbeddedId
-	public MedicineOfPatientIdDTO getPk() {
-		return pk;
-	}
 
-	public void setPk(MedicineOfPatientIdDTO pk) {
-		this.pk = pk;
-	}
-	
-	@Transient
-	public PatientDTO getPatientDTO() {
-		return getPk().getPatientDTO();
-	}
-	public void setPatientDTO(PatientDTO patientDTO) {
-		getPk().setPatientDTO(patientDTO);
-	}
-	
-	@Transient
-	public MedicineDTO getMedicineDTO() {
-		return getPk().getMedicineDTO();
-	}
-	public void setMedicineDTO(MedicineDTO medicineDTO) {
-		getPk().setMedicineDTO(medicineDTO);
-	}
-	
+
 
 	public String getQuantity() {
 		return quantity;
@@ -129,25 +111,43 @@ public class MedicineOfPatientDTO implements java.io.Serializable {
 	
 	
 	
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		MedicineOfPatientDTO that = (MedicineOfPatientDTO) o;
-
-		if (getPk() != null ? !getPk().equals(that.getPk())
-				: that.getPk() != null)
-			return false;
-
-		return true;
+	public long getId() {
+		return id;
 	}
 
-	public int hashCode() {
-		return (getPk() != null ? getPk().hashCode() : 0);
+	public void setId(long id) {
+		this.id = id;
 	}
-	
+
+
+
+
+	public PatientDTO getPatient() {
+		return patient;
+	}
+
+
+
+
+	public void setPatient(PatientDTO patient) {
+		this.patient = patient;
+	}
+
+
+
+
+	public MedicineDTO getMedicine() {
+		return medicine;
+	}
+
+
+
+
+	public void setMedicine(MedicineDTO medicine) {
+		this.medicine = medicine;
+	}
+
+
 	
 	
 	

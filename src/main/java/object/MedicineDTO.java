@@ -1,12 +1,16 @@
 package object;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -19,8 +23,9 @@ import javax.persistence.Table;
 public class MedicineDTO implements java.io.Serializable {
 
 	@Id
-	
-	@Column(name="idmedicine")
+	//@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="medicineId")
 	private long id;
 	
 	@Column(name="name")
@@ -34,9 +39,9 @@ public class MedicineDTO implements java.io.Serializable {
 	
 	@Column(name="producer")
 	private String producer;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.medicine")
-	private Set<MedicineOfPatientDTO> medicineOfPatient = new HashSet<MedicineOfPatientDTO>(0);
+		
+	@OneToMany(fetch = FetchType.LAZY /*,mappedBy = "medicine"*/)
+	private List<PatientDTO> patient = new ArrayList<PatientDTO>();
 
 	public void NewMedicine(String name, String barcode, Date expire_date, String producer) {
 		this.name=name;
@@ -45,12 +50,12 @@ public class MedicineDTO implements java.io.Serializable {
 		this.producer=producer;
 	}
 	
-	public void NewMedicine(String name, String barcode, Date expire_date, String producer,Set<MedicineOfPatientDTO> medicineOfPatient ) {
+	public void NewMedicine(String name, String barcode, Date expire_date, String producer,List<PatientDTO> patient ) {
 		this.name=name;
 		this.barcode=barcode;
 		this.expire_date=expire_date;
 		this.producer=producer;
-		this.medicineOfPatient=medicineOfPatient;
+		this.patient=patient;
 	}
 
 	public long getId() {
@@ -93,13 +98,15 @@ public class MedicineDTO implements java.io.Serializable {
 		this.producer = producer;
 	}
 
-	public Set<MedicineOfPatientDTO> getMedicineOfPatient() {
-		return medicineOfPatient;
+	public List<PatientDTO> getPatient() {
+		return patient;
 	}
 
-	public void setMedicineOfPatient(Set<MedicineOfPatientDTO> medicineOfPatient) {
-		this.medicineOfPatient = medicineOfPatient;
+	public void setPatient(List<PatientDTO> patient) {
+		this.patient = patient;
 	}
+
+
 
 	
 }

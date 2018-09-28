@@ -27,6 +27,6 @@
 		<mapping class="object.PatientDTO"/>
 		<mapping class="object.MedicineDTO"/>
 		<mapping class="object.MedicineOfPatientDTO"/>
-		<mapping class="object.MedicineOfPatientIdDTO"/>
+		
 </session-factory>
 </hibernate-configuration>
