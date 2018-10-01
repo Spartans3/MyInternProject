@@ -106,7 +106,11 @@ public class MedicineDTO implements java.io.Serializable {
 		this.patient = patient;
 	}
 
-
+	@Override
+	public String toString() {
+		return this.name;
+	}
+	
 
 	
 }

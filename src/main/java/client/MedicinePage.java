@@ -169,7 +169,11 @@ public class MedicinePage {
         TableModel tableModel2 = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
 		
 		
-		table = new JTable(tableModel2);
+		table = new JTable(tableModel2){
+			 public boolean isCellEditable(int row, int column){  
+		          return false;  
+		      }
+		};
 		
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setBackground(Color.CYAN);
