@@ -15,21 +15,36 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
+import com.mysql.jdbc.Connection;
+
 import businessClass.DataLabelFormatter;
 import businessClass.MedicineManager;
+import businessClass.MedicineOfPatientManager;
 import businessClass.PatientManager;
+import dbConnection.MySQLConnUtils;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import object.MedicineDTO;
 import object.PatientDTO;
 
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
@@ -65,6 +80,7 @@ public class PatientPage {
 	}
 
 	private String tmpString;
+	private int selectedRow;
 
 	private void initialize() throws ParseException {
 		frmNewPatient = new JFrame();
@@ -155,23 +171,101 @@ public class PatientPage {
 		frmNewPatient.getContentPane().add(scrollPane);
 
 		JPopupMenu popupMenu = new JPopupMenu();
-		JMenuItem medicineItem = new JMenuItem("Add Medicine");
+		JMenuItem medicineItem = new JMenuItem("Add medicine");
+		JMenuItem listMedicine = new JMenuItem("List medicines of this patient");
+
 		medicineItem.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				int selectedRow = table.getSelectedRow();
-				if( selectedRow == -1) {
+				selectedRow = table.getSelectedRow();
+				if (selectedRow > -1) {
+					PatientDTO selectedObject = tableData.get(selectedRow);
+					System.out.println(selectedRow);
+					MedicineOfPatientDialog dialog = new MedicineOfPatientDialog(selectedObject);
+
+				} else
 					JOptionPane.showMessageDialog(frmNewPatient, "Please Select the patient first", "hello", 1);
-				}
-				PatientDTO selectedObject = tableData.get(selectedRow);
-				System.out.println(selectedRow);
-				MedicineOfPatientDialog dialog = new MedicineOfPatientDialog(selectedObject);
 
 			}
 		});
 		popupMenu.add(medicineItem);
+
+		listMedicine.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				selectedRow = table.getSelectedRow();
+				if (selectedRow > -1) {
+					Connection conn = null;
+					try {
+						conn = (Connection) MySQLConnUtils.getMySQLConnection();
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						PatientDTO selectedObject = tableData.get(selectedRow);
+						System.out.println(selectedObject.getName()+"\n id: "+selectedObject.getId());
+						JasperDesign jd = JRXmlLoader.load("C:\\Users\\LENOVO\\Desktop\\report_files\\report.jrxml");
+						
+						/*HashMap hashMapList = new MedicineOfPatientManager().GetMedicineOfPatient(selectedObject.getId());
+						hashMapList.put("name", selectedObject.getName()+" "+selectedObject.getSurname());
+						*/
+						JRDesignQuery query = new JRDesignQuery();
+						/*query.setText("SELECT\r\n" + 
+								"     medicineofpatient.`medicineofpatientId` AS medicineofpatient_medicineofpatientId,\r\n" + 
+								"     medicineofpatient.`quantity` AS medicineofpatient_quantity,\r\n" + 
+								"     medicineofpatient.`treatmentDays` AS medicineofpatient_treatmentDays,\r\n" + 
+								"     medicineofpatient.`daily` AS medicineofpatient_daily,\r\n" + 
+								"     medicineofpatient.`startDate` AS medicineofpatient_startDate,\r\n" + 
+								"     medicineofpatient.`patientId` AS medicineofpatient_patientId,\r\n" + 
+								"     medicineofpatient.`medicineId` AS medicineofpatient_medicineId,\r\n" + 
+								"     patient.`patientId` AS patient_patientId,\r\n" + 
+								"     patient.`name` AS patient_name,\r\n" + 
+								"     patient.`surname` AS patient_surname,\r\n" + 
+								"     patient.`tc` AS patient_tc,\r\n" + 
+								"     patient.`tel` AS patient_tel,\r\n" + 
+								"     patient.`birthday` AS patient_birthday,\r\n" + 
+								"     medicine.`medicineId` AS medicine_medicineId,\r\n" + 
+								"     medicine.`name` AS medicine_name,\r\n" + 
+								"     medicine.`barcode` AS medicine_barcode,\r\n" + 
+								"     medicine.`expire_date` AS medicine_expire_date,\r\n" + 
+								"     medicine.`producer` AS medicine_producer\r\n" + 
+								"FROM\r\n" + 
+								"     `patient` patient INNER JOIN `medicineofpatient` medicineofpatient ON patient.`patientId` = medicineofpatient.`patientId`\r\n" + 
+								"     INNER JOIN `medicine` medicine ON medicineofpatient.`medicineId` = medicine.`medicineId`\r\n" + 
+								"\r\n" + 
+								"WHERE\r\n" + 
+								"	patient.`patientId`="+selectedObject.getId());
+						jd.setQuery(query);
+						*/
+						
+						HashMap a = new HashMap();
+						a.put("patientId",selectedObject.getId() );
+						
+						
+						
+						
+						
+						JasperReport jr=JasperCompileManager.compileReport(jd);						
+						JasperPrint jp = JasperFillManager.fillReport(jr, a , conn);
+						
+						JasperViewer.viewReport(jp,false);
+					} catch (Exception a) {
+						a.printStackTrace();
+						// TODO: handle exception
+					}
+				} else
+					JOptionPane.showMessageDialog(frmNewPatient, "Please Select the patient first", "hello", 1);
+
+			}
+		});
+		popupMenu.add(listMedicine);
 		table.setComponentPopupMenu(popupMenu);
 
 		JButton btnDelete = new JButton("DELETE");

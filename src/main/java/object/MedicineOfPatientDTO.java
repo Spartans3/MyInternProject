@@ -19,45 +19,38 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="medicineofpatient")
+@Table(name = "medicineofpatient")
 
 public class MedicineOfPatientDTO implements java.io.Serializable {
-	
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY )
-	@Column(name="medicineofpatientId")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "medicineofpatientId")
 	private long id;
-	
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "patientId")
 	private PatientDTO patient;
-	
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "medicineId")
 	private MedicineDTO medicine;
-	
-	
-	
-	@Column(name="quantity")
+
+	@Column(name = "quantity")
 	private String quantity;
-	
-	@Column(name="treatmentDays")
+
+	@Column(name = "treatmentDays")
 	private String treatmentDays;
-	
-	@Column(name="daily")
+
+	@Column(name = "daily")
 	private String daily;
-	
-	@Column(name="startDate")
+
+	@Column(name = "startDate")
 	private Date startDate;
-	
-	
+
 	public void MedicineOfPatient() {
-		
+
 	}
-	
-
-
 
 	public String getQuantity() {
 		return quantity;
@@ -82,35 +75,16 @@ public class MedicineOfPatientDTO implements java.io.Serializable {
 	public void setDaily(String daily) {
 		this.daily = daily;
 	}
-	
+
 	@Temporal(TemporalType.DATE)
 	public Date getStartDate() {
 		return startDate;
 	}
-	
+
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public long getId() {
 		return id;
 	}
@@ -119,36 +93,20 @@ public class MedicineOfPatientDTO implements java.io.Serializable {
 		this.id = id;
 	}
 
-
-
-
 	public PatientDTO getPatient() {
 		return patient;
 	}
-
-
-
 
 	public void setPatient(PatientDTO patient) {
 		this.patient = patient;
 	}
 
-
-
-
 	public MedicineDTO getMedicine() {
 		return medicine;
 	}
-
-
-
 
 	public void setMedicine(MedicineDTO medicine) {
 		this.medicine = medicine;
 	}
 
-
-	
-	
-	
 }

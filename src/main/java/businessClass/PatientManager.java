@@ -49,7 +49,6 @@ public class PatientManager {
 		
 		String hql= " from PatientDTO where tc = '"+ tc +"' ";
 		Query query = DbUtil.getConnection().createQuery(hql);
-		
 		List<PatientDTO> result = query.list();
 		
 		

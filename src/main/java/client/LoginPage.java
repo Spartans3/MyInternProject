@@ -16,7 +16,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.persistence.*;
 
 public class LoginPage {
 
@@ -68,11 +67,15 @@ public class LoginPage {
 		frmLognPage.getContentPane().add(lblPassword);
 
 		usernameField = new JTextField();
+		usernameField.setText("root");
 		usernameField.setBounds(283, 89, 116, 22);
 		frmLognPage.getContentPane().add(usernameField);
 		usernameField.setColumns(10);
 
+		
+		
 		passwordField = new JPasswordField();
+		passwordField.setText("root");
 		passwordField.setBounds(283, 130, 116, 22);
 		frmLognPage.getContentPane().add(passwordField);
 

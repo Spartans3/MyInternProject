@@ -36,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-public class MedicineOfPatientDialog extends MedicineDialogMethods {
+public class MedicineOfPatientDialog  {
 
 	private JFrame frmAddMedceFor;
 	private JTextField quantityTextField;
