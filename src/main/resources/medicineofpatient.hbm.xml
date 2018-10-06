@@ -7,30 +7,31 @@
 <hibernate-mapping>
 
 
-	
+
 	<component name="patientDTO">
-		
-			<many-to-one name="idnewPatient" class="object.PatientDTO"
-				update="false" insert="false">
-				<column name="idnewPatient" not-null="true" />
-			</many-to-one>
 
-		</component>
-		
-		<component name="MedicineDTO">
-		
-			<many-to-one name="medicineId" class="object.MedicineDTO"
-				update="false" insert="false">
-				<column name="medicineId" not-null="true" />
-			</many-to-one>
+		<many-to-one name="idnewPatient" class="object.PatientDTO"
+			update="false" insert="false">
+			<column name="idnewPatient" not-null="true" />
+		</many-to-one>
 
-		</component>
+	</component>
 
-	<property name ="quantity" column= "quantity" type="string" />
-	<property name ="treatmentDays" column= "treatmentDays" type="string" />
-	<property name="startDate" column= "startDate" type= "date" />
-	<property name ="daily" column= "daily" type="string" ></property>
-	
+	<component name="MedicineDTO">
+
+		<many-to-one name="medicineId" class="object.MedicineDTO"
+			update="false" insert="false">
+			<column name="medicineId" not-null="true" />
+		</many-to-one>
+
+	</component>
+
+	<property name="quantity" column="quantity" type="string" />
+	<property name="treatmentDays" column="treatmentDays"
+		type="string" />
+	<property name="startDate" column="startDate" type="date" />
+	<property name="daily" column="daily" type="string"></property>
+
 
 
 </class>

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,45 +18,40 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="medicine")
-
+@Table(name = "medicine")
 
 public class MedicineDTO implements java.io.Serializable {
 
 	@Id
-	//@GeneratedValue(strategy=GenerationType.AUTO)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="medicineId")
+	@Column(name = "medicineId")
 	private long id;
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "barcode")
 	private String barcode;
-	
-	@Column(name="expire_date")
+
+	@Column(name = "expire_date")
 	private Date expire_date;
-	
-	@Column(name="producer")
+
+	@Column(name = "producer")
 	private String producer;
-		
-	@OneToMany(fetch = FetchType.LAZY /*,mappedBy = "medicine"*/)
-	private List<PatientDTO> patient = new ArrayList<PatientDTO>();
+
 
 	public void NewMedicine(String name, String barcode, Date expire_date, String producer) {
-		this.name=name;
-		this.barcode=barcode;
-		this.expire_date=expire_date;
-		this.producer=producer;
+		this.name = name;
+		this.barcode = barcode;
+		this.expire_date = expire_date;
+		this.producer = producer;
 	}
-	
-	public void NewMedicine(String name, String barcode, Date expire_date, String producer,List<PatientDTO> patient ) {
-		this.name=name;
-		this.barcode=barcode;
-		this.expire_date=expire_date;
-		this.producer=producer;
-		this.patient=patient;
+
+	public void NewMedicine(String name, String barcode, Date expire_date, String producer, List<PatientDTO> patient) {
+		this.name = name;
+		this.barcode = barcode;
+		this.expire_date = expire_date;
+		this.producer = producer;
 	}
 
 	public long getId() {
@@ -98,19 +94,9 @@ public class MedicineDTO implements java.io.Serializable {
 		this.producer = producer;
 	}
 
-	public List<PatientDTO> getPatient() {
-		return patient;
-	}
-
-	public void setPatient(List<PatientDTO> patient) {
-		this.patient = patient;
-	}
-
 	@Override
 	public String toString() {
 		return this.name;
 	}
-	
 
-	
 }

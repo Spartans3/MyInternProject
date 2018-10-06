@@ -21,6 +21,7 @@ import object.PatientDTO;
 
 import java.awt.Rectangle;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -79,6 +80,7 @@ public class MedicineOfPatientDialog  {
 			}
 		});
 		MedicineCombobox mc = new MedicineCombobox();
+		
 		/*for (MedicineDTO medicineObject : mc.ListMedicine()) {
 			mc.addItem(medicineObject);
 		}*/
@@ -126,23 +128,29 @@ public class MedicineOfPatientDialog  {
 		JButton btnSave = new JButton("SAVE");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy");
-				String a = tmpString;
+				if(mc.getSelectedItem().toString() != "select" || tmpString==null) {
+					SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy");
+					String a = tmpString;
 
-				Date date = null;
-				try {
-					date = formatter.parse(a);
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Date date = null;
+					try {
+						date = formatter.parse(a);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					MedicineDTO medicine = new MedicineDTO();
+					medicine = (MedicineDTO) mc.getSelectedMedicine();
+					System.out.println(medicine.getId());
+
+					MedicineOfPatientManager save = new MedicineOfPatientManager();
+					save.SetMedicineOfPatient(quantityTextField.getText(), treatmentTextField.getText(),
+							dailyTextField.getText(), date, patient.getId(), medicine.getId());
 				}
-				MedicineDTO medicine = new MedicineDTO();
-				medicine = (MedicineDTO) mc.getSelectedMedicine();
-				System.out.println(medicine.getId());
+				else
+					JOptionPane.showMessageDialog(frmAddMedceFor, "Please select a medicine","Error" , 0);
+				
 
-				MedicineOfPatientManager save = new MedicineOfPatientManager();
-				save.SetMedicineOfPatient(quantityTextField.getText(), treatmentTextField.getText(),
-						dailyTextField.getText(), date, patient.getId(), medicine.getId());
 			}
 		});
 		btnSave.setBounds(400, 128, 105, 64);

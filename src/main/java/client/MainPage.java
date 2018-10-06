@@ -28,8 +28,12 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.Color;
+import java.awt.Dimension;
 
-public class MainPage {
+public class MainPage extends JFrame {
 
 	private JFrame frmMainPage;
 
@@ -39,18 +43,36 @@ public class MainPage {
 	}
 
 	private void initialize() {
-		frmMainPage = new JFrame();
-		frmMainPage.setSize(618, 396);
-		frmMainPage.setTitle("Main Page");
-		frmMainPage.setVisible(true);
-		frmMainPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmMainPage.setLocationRelativeTo(null);
-		frmMainPage.getContentPane().setLayout(null);
+		new JFrame();
+		setSize(5000, 5000);
+		setTitle("Main Page");
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		getContentPane().setLayout(null);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int width = (int) screenSize.getWidth();
+		int height = (int) screenSize.getHeight();
 
+		JButton btnNewButton_1 = new JButton("Medicines");
+		btnNewButton_1.setForeground(new Color(204, 51, 255));
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 30));
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				MedicinePage a = new MedicinePage();
+
+			}
+		});
+		btnNewButton_1.setBounds(1036, 405, 184, 151);
+		getContentPane().add(btnNewButton_1);
 		JButton btnPatient = new JButton("Patient");
+		btnPatient.setForeground(new Color(153, 51, 255));
+		btnPatient.setFont(new Font("Tahoma", Font.BOLD, 30));
 		btnPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frmMainPage.setVisible(false);
+				setVisible(false);
 
 				try {
 					PatientPage a = new PatientPage();
@@ -61,54 +83,8 @@ public class MainPage {
 
 			}
 		});
-		btnPatient.setBounds(61, 68, 114, 25);
-		frmMainPage.getContentPane().add(btnPatient);
-
-		JButton btnNewButton = new JButton("Discharge");
-		btnNewButton.setBounds(236, 68, 114, 25);
-		frmMainPage.getContentPane().add(btnNewButton);
-
-		JButton btnReport = new JButton("Report");
-		btnReport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Connection conn = null;
-				try {
-					conn = (Connection) MySQLConnUtils.getMySQLConnection();
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				try {
-
-					String report = "C:\\Users\\LENOVO\\Desktop\\report_files\\reportDeneme2.jrxml";
-					JasperReport jr = JasperCompileManager.compileReport(report);
-					Map<String, Object> parameters = new HashMap<String, Object>();
-					JasperPrint jp = JasperFillManager.fillReport(jr, parameters, conn);
-					JasperViewer.viewReport(jp);
-
-				} catch (Exception e) {
-					e.printStackTrace();
-					// TODO: handle exception
-				}
-
-			}
-		});
-		btnReport.setBounds(414, 68, 114, 25);
-		frmMainPage.getContentPane().add(btnReport);
-
-		JButton btnNewButton_1 = new JButton("Medicines");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				frmMainPage.setVisible(false);
-				MedicinePage a = new MedicinePage();
-
-			}
-		});
-		btnNewButton_1.setBounds(61, 159, 114, 25);
-		frmMainPage.getContentPane().add(btnNewButton_1);
+		btnPatient.setBounds(751, 405, 184, 151);
+		getContentPane().add(btnPatient);
 
 	}
 }

@@ -45,8 +45,6 @@ public class PatientDTO implements java.io.Serializable {
 	@Column(name = "birthday")
 	private Date birthday;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "patient", cascade = CascadeType.ALL)
-	private List<MedicineDTO> medicine = new ArrayList<MedicineDTO>();
 
 	public void NewPatient(String name, String surname, String tc, String tel, Date birthday) {
 		this.name = name;
@@ -63,15 +61,6 @@ public class PatientDTO implements java.io.Serializable {
 		this.tc = tc;
 		this.tel = tel;
 		this.birthday = birthday;
-		this.medicine = medicine;
-	}
-
-	public List<MedicineDTO> getMedicine() {
-		return medicine;
-	}
-
-	public void setMedicine(List<MedicineDTO> medicine) {
-		this.medicine = medicine;
 	}
 
 	public Date getBirthday() {

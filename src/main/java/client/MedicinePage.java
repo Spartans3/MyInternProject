@@ -1,10 +1,13 @@
 package client;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
@@ -39,6 +42,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 
 public class MedicinePage {
 
@@ -53,7 +57,6 @@ public class MedicinePage {
 		initialize();
 	}
 
-
 	private void initialize() {
 		frmManageMedicine = new JFrame();
 		frmManageMedicine.setTitle("Manage Medicine");
@@ -62,58 +65,69 @@ public class MedicinePage {
 		frmManageMedicine.getContentPane().setLayout(null);
 		frmManageMedicine.setLocationRelativeTo(null);
 		frmManageMedicine.setVisible(true);
-		
+
 		JButton btnMainPage = new JButton("Main Page");
 		btnMainPage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				frmManageMedicine.setVisible(false);
 				MainPage b = new MainPage();
 			}
 		});
 		btnMainPage.setBounds(798, 29, 97, 112);
 		frmManageMedicine.getContentPane().add(btnMainPage);
-		
+
 		JLabel lblMedicineName = new JLabel("Medicine Name:");
 		lblMedicineName.setBounds(29, 29, 97, 16);
 		frmManageMedicine.getContentPane().add(lblMedicineName);
-		
+
 		JLabel lblBarcodeNumber = new JLabel("Barcode:");
 		lblBarcodeNumber.setBounds(29, 59, 87, 16);
 		frmManageMedicine.getContentPane().add(lblBarcodeNumber);
-		
+
 		JLabel lblExpireDate = new JLabel("Expire Date:");
-		lblExpireDate.setBounds(29, 117, 87, 16);
+		lblExpireDate.setBounds(29, 125, 87, 16);
 		frmManageMedicine.getContentPane().add(lblExpireDate);
-		
+
 		JLabel lblProducer = new JLabel("Producer:");
 		lblProducer.setBounds(29, 88, 87, 16);
 		frmManageMedicine.getContentPane().add(lblProducer);
-		
+
 		nameTextField = new JTextField();
-		nameTextField.setBounds(138, 26, 116, 22);
+		nameTextField.setBounds(168, 26, 116, 22);
 		frmManageMedicine.getContentPane().add(nameTextField);
 		nameTextField.setColumns(10);
-		
+
 		barcodeTextField = new JTextField();
-		barcodeTextField.setBounds(138, 56, 116, 22);
+		barcodeTextField.setBounds(168, 56, 116, 22);
 		frmManageMedicine.getContentPane().add(barcodeTextField);
 		barcodeTextField.setColumns(10);
-		
+		barcodeTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char vchar = e.getKeyChar();
+				if (!(Character.isDigit(vchar)) || vchar == KeyEvent.VK_BACK_SPACE || vchar == KeyEvent.VK_DELETE) {
+					Toolkit.getDefaultToolkit().beep();
+					e.consume();
+				}
+
+			}
+		});
+
 		producerTextField = new JTextField();
-		producerTextField.setBounds(138, 88, 116, 22);
+		producerTextField.setBounds(168, 88, 116, 22);
 		frmManageMedicine.getContentPane().add(producerTextField);
 		producerTextField.setColumns(10);
-		
+
 		UtilDateModel model = new UtilDateModel();
 		Properties pro = new Properties();
 		pro.put("text.today", "Today");
 		pro.put("text.month", "Month");
 		pro.put("text.year", "Year");
-		
-		JDatePanelImpl datePanel = new JDatePanelImpl(model,pro);
+
+		JDatePanelImpl datePanel = new JDatePanelImpl(model, pro);
 		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DataLabelFormatter());
-		datePanel.setBounds(138,123,220,173);
+		datePanel.setBounds(168, 123, 220, 173);
 		frmManageMedicine.getContentPane().add(datePanel, "Today");
 		datePanel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -121,115 +135,131 @@ public class MedicinePage {
 				tmpString = s;
 				System.out.println("hi" + s);
 
-				
 			}
 		});
-		
-		//Delete Section
-		
+
+		// Delete Section
+
 		JButton btnDelete = new JButton("DELETE");
 		btnDelete.setBounds(798, 318, 97, 273);
 		frmManageMedicine.getContentPane().add(btnDelete);
 		btnDelete.setVisible(true);
-		
-		//Table and List Section Below
+		btnDelete.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JOptionPane.showMessageDialog(frmManageMedicine, "Please select medicine first from the table",
+						"Missing something out?", 0);
+			}
+		});
+
+		// Table and List Section Below
 		Configuration cfg = new Configuration();
 		cfg.configure("hibernate.cfg.xml");
 
-		MedicineManager manager =new MedicineManager();
+		MedicineManager manager = new MedicineManager();
 		List tableData = manager.ListMedicines();
-		
-		Iterator it = tableData.listIterator();
-				
-        List<String> columns = new ArrayList<String>();
-        List<String[]> values = new ArrayList<String[]>();
 
-        columns.add("Name");
-        columns.add("Barcode");
-        columns.add("Producer");
-        columns.add("Expire Date");
-        
-		while(it.hasNext()) {
-			
+		Iterator it = tableData.listIterator();
+
+		List<String> columns = new ArrayList<String>();
+		List<String[]> values = new ArrayList<String[]>();
+
+		columns.add("Name");
+		columns.add("Barcode");
+		columns.add("Producer");
+		columns.add("Expire Date");
+
+		while (it.hasNext()) {
+
 			MedicineDTO medi = (MedicineDTO) it.next();
 			String data1 = medi.getName();
 			String data2 = medi.getBarcode();
 			String data3 = medi.getProducer();
-			
-			
-	         SimpleDateFormat  format = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-	         String expire_date = format.format(medi.getExpire_date());
-	         expire_date = expire_date.substring(0, 10);
-			
-			String [] row = {data1,data2,data3,expire_date };
-			
-			values.add(new String[] {data1,data2,data3,expire_date});
+
+			SimpleDateFormat format = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+			String expire_date = format.format(medi.getExpire_date());
+			expire_date = expire_date.substring(0, 10);
+
+			String[] row = { data1, data2, data3, expire_date };
+
+			values.add(new String[] { data1, data2, data3, expire_date });
 		}
-		
-        TableModel tableModel2 = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
-		
-		
-		table = new JTable(tableModel2){
-			 public boolean isCellEditable(int row, int column){  
-		          return false;  
-		      }
+
+		TableModel tableModel2 = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
+
+		table = new JTable(tableModel2) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
-		
+
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setBackground(Color.CYAN);
 		table.setBounds(29, 331, 741, 260);
-		
-		
+
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(29, 331, 741, 260);
 		frmManageMedicine.getContentPane().add(scrollPane);
-				
+
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-	              int s =  table.getSelectedRow();
-	              System.out.println(s);
-	              String barcode =(String) table.getValueAt(s, 1) ;
-	              System.out.println(barcode);
-	              
-	      		btnDelete.addActionListener(new ActionListener() {
-	      			public void actionPerformed(ActionEvent e) {
-	      				manager.RemoveMedicine(barcode);
-	      				JOptionPane.showMessageDialog(frmManageMedicine, "Deleted!", "Message!", 1);
-	      				
-	      			}
-	      		});
+				int s = table.getSelectedRow();
+				System.out.println(s);
+				String barcode = (String) table.getValueAt(s, 1);
+				System.out.println(barcode);
 
-	              
-			}
-		});
-		
-		//Add medicine section is below here
-				JButton btnAdd = new JButton("ADD");
-				btnAdd.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy");
-						String a =tmpString;
-						
-						
-						
-						Date date = null;
-						try {
-							date = formatter.parse(a);
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-						manager.SetMedicine(
-								nameTextField.getText(), barcodeTextField.getText(), date ,
-								producerTextField.getText() 
-							
-								);
-					  JOptionPane.showMessageDialog(frmManageMedicine,nameTextField.getText()  + " has been added", "Message!", 1);
+				btnDelete.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						manager.RemoveMedicine(barcode);
+						JOptionPane.showMessageDialog(frmManageMedicine, "Deleted!", "Message!", 1);
+
 					}
 				});
 
-				btnAdd.setBounds(403, 132, 97, 164);
-				frmManageMedicine.getContentPane().add(btnAdd);
+			}
+		});
+
+		// Add medicine section is below here
+		JButton btnAdd = new JButton("ADD");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (tmpString != null && barcodeTextField.getText().length() == 13 && nameTextField != null
+						&& producerTextField != null) {
+					SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy");
+					String a = tmpString;
+					Date date = null;
+					try {
+						date = formatter.parse(a);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					try {
+						manager.SetMedicine(nameTextField.getText(), barcodeTextField.getText(), date,
+								producerTextField.getText()
+
+						);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					JOptionPane.showMessageDialog(frmManageMedicine, nameTextField.getText() + " has been added",
+							"Message!", 1);
+				} else
+					JOptionPane.showMessageDialog(frmManageMedicine, "Check the fields if correct", "ERROR", 0);
+
+			}
+		});
+
+		btnAdd.setBounds(433, 132, 97, 164);
+		frmManageMedicine.getContentPane().add(btnAdd);
+		
+		JTextPane txtpnPlease = new JTextPane();
+		txtpnPlease.setText("!!!Date Panel Info!!!\nAfter selecting date, please click the white field on the left of the \"x\" button ");
+		txtpnPlease.setBounds(29, 204, 129, 92);
+		frmManageMedicine.getContentPane().add(txtpnPlease);
 	}
 }

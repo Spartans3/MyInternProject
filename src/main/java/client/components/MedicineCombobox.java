@@ -8,7 +8,7 @@ import businessClass.MedicineManager;
 import object.MedicineDTO;
 
 public class MedicineCombobox extends JComboBox {
-
+	
 	MedicineManager medicine = new MedicineManager();
 	public MedicineCombobox() {
 		try {
@@ -30,7 +30,9 @@ public class MedicineCombobox extends JComboBox {
 		return medicineNames;
 	}
 	private void setItemList() {
+		addItem("select");
 		for (MedicineDTO medicineObject : ListMedicine()) {
+			
 			addItem(medicineObject);
 		}
 	}

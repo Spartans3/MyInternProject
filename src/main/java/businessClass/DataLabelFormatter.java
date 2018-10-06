@@ -9,21 +9,20 @@ import javax.swing.JFormattedTextField.AbstractFormatter;
 
 public class DataLabelFormatter extends AbstractFormatter {
 
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-M-yyy");
-    // Date dateWithoutTime = dateFormatter.parse(dateFormatter.format(new Date()));
+	private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-M-yyy");
 
-    @Override
-    public Object stringToValue(String text) throws ParseException {
-        return dateFormatter.parseObject(text);
-    }
+	@Override
+	public Object stringToValue(String text) throws ParseException {
+		return dateFormatter.parseObject(text);
+	}
 
-    @Override
-    public String valueToString(Object value) throws ParseException {
-        if (value != null) {
-            Calendar cal = (Calendar) value;
-            return dateFormatter.format(cal.getTime());
-        }
+	@Override
+	public String valueToString(Object value) throws ParseException {
+		if (value != null) {
+			Calendar cal = (Calendar) value;
+			return dateFormatter.format(cal.getTime());
+		}
 
-        return "";
-    }
+		return "";
+	}
 }
