@@ -3,9 +3,9 @@ package businessClass;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-
 import javax.swing.JFormattedTextField.AbstractFormatter;
+
+import dbConnection.HibernateUtil;
 
 public class DataLabelFormatter extends AbstractFormatter {
 
@@ -22,6 +22,8 @@ public class DataLabelFormatter extends AbstractFormatter {
 			Calendar cal = (Calendar) value;
 			return dateFormatter.format(cal.getTime());
 		}
+		
+		//HibernateUtil.getSessionFactory().openSession();
 
 		return "";
 	}

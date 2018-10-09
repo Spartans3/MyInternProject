@@ -8,9 +8,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
-
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -22,14 +19,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.Component;
+import java.awt.Color;
+import javax.swing.border.LineBorder;
 
 public class LoginPage extends JFrame {
 
@@ -53,13 +46,12 @@ public class LoginPage extends JFrame {
 
 	public LoginPage() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(getMaximumSize());
 
-		setBounds(100, 100, 1329, 1123);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
 
 		initialize();
 	}
@@ -70,24 +62,45 @@ public class LoginPage extends JFrame {
 	private void initialize() {
 
 		setTitle("LOGIN PAGE");
+		contentPane.setLayout(null);
 
 		JLabel lblUsername = new JLabel("Username:");
-		lblUsername.setBounds(662, 381, 165, 56);
+		lblUsername.setBounds(745, 432, 92, 63);
 		lblUsername.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
 		getContentPane().add(lblUsername);
 
-		usernameField = new JTextField();
-		usernameField.setBounds(865, 381, 217, 56);
-		usernameField.setText("root");
-		getContentPane().add(usernameField);
-		usernameField.setColumns(10);
+		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setBounds(746, 508, 91, 63);
+		lblPassword.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
+		getContentPane().add(lblPassword);
+
+		JPanel panel = new JPanel();
+		panel.setBounds(685, 335, 655, 280);
+		panel.setBorder(new LineBorder(Color.BLUE, 8, true));
+		panel.setForeground(Color.DARK_GRAY);
+		contentPane.add(panel);
+		panel.setLayout(null);
 
 		passwordField = new JPasswordField();
-		passwordField.setBounds(865, 468, 217, 56);
-		passwordField.setText("root");
+		passwordField.setBounds(187, 169, 218, 62);
+		panel.add(passwordField);
+		//passwordField.setText("root");
+
+		usernameField = new JTextField();
+		usernameField.setBounds(187, 93, 218, 63);
+		panel.add(usernameField);
+		//usernameField.setText("root");
+		usernameField.setColumns(10);
 
 		JButton btnLogn = new JButton("LOGIN");
-		btnLogn.setBounds(1146, 374, 165, 150);
+		btnLogn.setBounds(461, 132, 110, 63);
+		panel.add(btnLogn);
+
+		JLabel lblLogn = new JLabel("LOGIN");
+		lblLogn.setBounds(231, 16, 218, 70);
+		panel.add(lblLogn);
+		lblLogn.setForeground(Color.RED);
+		lblLogn.setFont(new Font("Tahoma", Font.BOLD, 58));
 		btnLogn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				UserDTO user = new UserDTO();
@@ -108,17 +121,6 @@ public class LoginPage extends JFrame {
 
 			}
 		});
-		getContentPane().add(btnLogn);
-
-		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setBounds(662, 468, 160, 56);
-		lblPassword.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
-		getContentPane().add(lblPassword);
-
-		imageLabel = new JLabel();
-		imageLabel.setBounds(87, 86, 56, 16);
-
-		contentPane.add(imageLabel);
 		passwordField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -142,6 +144,10 @@ public class LoginPage extends JFrame {
 				}
 			}
 		});
-		getContentPane().add(passwordField);
+		imageLabel = new JLabel();
+		imageLabel.setBounds(0, 0, 1929, 1059);
+		imageLabel.setIcon(new ImageIcon(LoginPage.class.getResource("/images/hospital-new.jpg")));
+
+		contentPane.add(imageLabel);
 	}
 }

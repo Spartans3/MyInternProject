@@ -1,19 +1,11 @@
 package client;
 
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Properties;
 
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import businessClass.DataLabelFormatter;
-import businessClass.MedicineManager;
 import businessClass.MedicineOfPatientManager;
 import client.components.MedicineCombobox;
 import object.MedicineDTO;

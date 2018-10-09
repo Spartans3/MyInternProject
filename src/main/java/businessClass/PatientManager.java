@@ -7,12 +7,12 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import dbConnection.DbUtil;
+import dbConnection.HibernateUtil;
 import object.PatientDTO;
 
 public class PatientManager {
-	Session session = DbUtil.getConnection();
-	Transaction tx = session.beginTransaction();
+	Session session = HibernateUtil.getSession();
+	Transaction tx ;
 
 	// for adding a patient
 	public void SetPatient(String name, String surname, String tc, String tel, Date birthday) {
@@ -27,7 +27,8 @@ public class PatientManager {
 		session.joinTransaction();
 		session.save(patient);
 		System.out.println("Patient saved successfully.....!!");
-
+		
+		session.save(patient);
 		tx.commit();
 
 	}
@@ -36,7 +37,7 @@ public class PatientManager {
 	// if it has any medicine attached, patient can't be deleted
 	// because of foreign key is in the medicineofpatient
 	public void RemovePatient(String tc) {
-
+		System.out.println(session.isJoinedToTransaction());
 		session.joinTransaction();
 		String hql = " delete  from PatientDTO where tc = :myTC ";
 		Query query = session.createQuery(hql);
@@ -52,5 +53,6 @@ public class PatientManager {
 
 		return data;
 	}
+	
 
 }

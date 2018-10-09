@@ -7,7 +7,6 @@
 <hibernate-mapping>
 
 
-
 	<component name="patientDTO">
 
 		<many-to-one name="idnewPatient" class="object.PatientDTO"
@@ -33,6 +32,6 @@
 	<property name="daily" column="daily" type="string"></property>
 
 
-
-</class>
 </hibernate-mapping>
+
+

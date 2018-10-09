@@ -7,13 +7,15 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import dbConnection.DbUtil;
+import dbConnection.HibernateUtil;
 import object.MedicineDTO;
 
 public class MedicineManager {
-
-	Session session = DbUtil.getConnection();
-	Transaction tx = session.beginTransaction();
+	
+//	HibernateUtil hbCon = new HibernateUtil();
+	
+	Session session = HibernateUtil.getSession();
+	Transaction tx ;
 	// for adding medicine
 	public void SetMedicine(String name, String barcode, Date expire_date, String producer) throws InterruptedException {
 
@@ -28,6 +30,7 @@ public class MedicineManager {
 		System.out.println("medicine saved successfully.....!!");
 		tx.commit();
 		
+		
 
 	}
 	
@@ -40,7 +43,7 @@ public class MedicineManager {
 		MedicineDTO medicine = new MedicineDTO();
 
 		String hql = " from MedicineDTO where barcode = '" + barcode + "' ";
-		Query query = DbUtil.getConnection().createQuery(hql);
+		Query query = HibernateUtil.getSession().createQuery(hql);
 
 		List<MedicineDTO> result = query.list();
 

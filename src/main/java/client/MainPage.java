@@ -1,81 +1,47 @@
 package client;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-
-import com.mysql.jdbc.Connection;
-
-import dbConnection.DbUtil;
-import dbConnection.MySQLConnUtils;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.export.ExporterInput;
-import net.sf.jasperreports.export.OutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
-import net.sf.jasperreports.view.JasperViewer;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.Color;
 import java.awt.Dimension;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import com.jgoodies.forms.layout.FormSpecs;
 
 public class MainPage extends JFrame {
-
-	private JFrame frmMainPage;
-
+	
+	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	
 	public MainPage() {
 		initialize();
-
+		setSize(screenSize.width, screenSize.height);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 
 	private void initialize() {
-		new JFrame();
-		setSize(5000, 5000);
+
 		setTitle("Main Page");
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		getContentPane().setLayout(null);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (int) screenSize.getWidth();
-		int height = (int) screenSize.getHeight();
-
-		JButton btnNewButton_1 = new JButton("Medicines");
-		btnNewButton_1.setForeground(new Color(204, 51, 255));
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 30));
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-				MedicinePage a = new MedicinePage();
-
-			}
-		});
-		btnNewButton_1.setBounds(1036, 405, 184, 151);
-		getContentPane().add(btnNewButton_1);
 		JButton btnPatient = new JButton("Patient");
 		btnPatient.setForeground(new Color(153, 51, 255));
-		btnPatient.setFont(new Font("Tahoma", Font.BOLD, 30));
+		btnPatient.setFont(new Font("Tahoma", Font.BOLD, 35));
 		btnPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 
 				try {
 					PatientPage a = new PatientPage();
+					
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -83,8 +49,34 @@ public class MainPage extends JFrame {
 
 			}
 		});
-		btnPatient.setBounds(751, 405, 184, 151);
-		getContentPane().add(btnPatient);
+		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("969px"),
+				ColumnSpec.decode("102px"),
+				ColumnSpec.decode("867px"),},
+			new RowSpec[] {
+				RowSpec.decode("359px"),
+				RowSpec.decode("104px"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("524px"),}));
+		getContentPane().add(btnPatient, "1, 2, fill, fill");
+		
+		
+		
+		JButton btnNewButton_1 = new JButton("Medicines");
+		btnNewButton_1.setForeground(new Color(204, 51, 255));
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				MedicinePage a = new MedicinePage();
+
+			}
+		});
+		getContentPane().add(btnNewButton_1, "3, 2, fill, fill");
+		
+		JLabel label = new JLabel("");
+		label.setIcon(new ImageIcon(MainPage.class.getResource("/images/blue-vector-5.png")));
+		getContentPane().add(label, "1, 4, 3, 1, fill, fill");
 
 	}
 }

@@ -5,14 +5,14 @@ import java.util.Date;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import dbConnection.DbUtil;
+import dbConnection.HibernateUtil;
 import object.MedicineDTO;
 import object.MedicineOfPatientDTO;
 import object.PatientDTO;
 
 public class MedicineOfPatientManager {
-	Session session = DbUtil.getConnection();
-	Transaction tx = session.beginTransaction();
+	Session session = HibernateUtil.getSession();
+	Transaction tx ;
 	//adding a new medicine for a patient
 	public void SetMedicineOfPatient(String quantity, String treatmentDays, String daily, Date startDate,
 			Long patientId, Long medicineId) {
