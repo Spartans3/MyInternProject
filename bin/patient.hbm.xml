@@ -5,25 +5,25 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-<class name= "object.PatientDTO" table ="patient">
+	<class name="object.PatientDTO" table="patient">
 
-	<id name = "id" type = "int" column= "patientId">
-		<generator class="native"></generator>
-	</id>
-	
-	<property name ="name" column= "name" type="string" />
-	<property name ="surname" column= "surname" type="string" />
-	<property name ="tc" column= "tc" type="string" />
-	<property name ="tel" column= "tel" type="string" />
-	<property name="birthday" column= "birthday" type= "date"></property>
-	
-		<set name="medicineOfPatient" table="patient" inverse="true" 
-	lazy="true" fetch="select" cascade="all">
-		<key>
-			<column name="patient" not-null="true"></column>
-		</key>
-		<one-to-many class="object.MedicineOfPatientDTO"/>
-	</set>
+		<id name="id" type="int" column="patientId">
+			<generator class="native"></generator>
+		</id>
 
-</class>
+		<property name="name" column="name" type="string" />
+		<property name="surname" column="surname" type="string" />
+		<property name="tc" column="tc" type="string" />
+		<property name="tel" column="tel" type="string" />
+		<property name="birthday" column="birthday" type="date"></property>
+
+		<set name="medicineOfPatient" table="patient" inverse="true"
+			lazy="true" fetch="select" cascade="all">
+			<key>
+				<column name="patient" not-null="true"></column>
+			</key>
+			<one-to-many class="object.MedicineOfPatientDTO" />
+		</set>
+
+	</class>
 </hibernate-mapping>

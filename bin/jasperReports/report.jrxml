@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a417c121-1f53-44a2-a807-2f5d95ec11c8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="name" class="java.lang.String"/>
+	<parameter name="medicineName" class="java.lang.String"/>
+	<parameter name="startDate" class="java.lang.String"/>
+	<parameter name="quantity" class="java.lang.String"/>
+	<parameter name="daily" class="java.lang.String"/>
+	<parameter name="treatmentDays" class="java.lang.String"/>
+	<parameter name="patientId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     medicineofpatient.`medicineofpatientId` AS medicineofpatient_medicineofpatientId,
+     medicineofpatient.`quantity` AS medicineofpatient_quantity,
+     medicineofpatient.`treatmentDays` AS medicineofpatient_treatmentDays,
+     medicineofpatient.`daily` AS medicineofpatient_daily,
+     medicineofpatient.`startDate` AS medicineofpatient_startDate,
+     medicineofpatient.`patientId` AS medicineofpatient_patientId,
+     medicineofpatient.`medicineId` AS medicineofpatient_medicineId,
+     patient.`patientId` AS patient_patientId,
+     patient.`name` AS patient_name,
+     patient.`surname` AS patient_surname,
+     patient.`tc` AS patient_tc,
+     patient.`tel` AS patient_tel,
+     patient.`birthday` AS patient_birthday,
+     medicine.`medicineId` AS medicine_medicineId,
+     medicine.`name` AS medicine_name,
+     medicine.`barcode` AS medicine_barcode,
+     medicine.`expire_date` AS medicine_expire_date,
+     medicine.`producer` AS medicine_producer
+FROM
+     `patient` patient INNER JOIN `medicineofpatient` medicineofpatient ON patient.`patientId` = medicineofpatient.`patientId`
+     INNER JOIN `medicine` medicine ON medicineofpatient.`medicineId` = medicine.`medicineId`
+
+WHERE
+	patient.`patientId`=$P{patientId}]]>
+	</queryString>
+	<field name="medicineofpatient_medicineofpatientId" class="java.lang.Integer"/>
+	<field name="medicineofpatient_quantity" class="java.lang.String"/>
+	<field name="medicineofpatient_treatmentDays" class="java.lang.String"/>
+	<field name="medicineofpatient_daily" class="java.lang.String"/>
+	<field name="medicineofpatient_startDate" class="java.sql.Date"/>
+	<field name="medicineofpatient_patientId" class="java.lang.Integer"/>
+	<field name="medicineofpatient_medicineId" class="java.lang.Integer"/>
+	<field name="patient_patientId" class="java.lang.Integer"/>
+	<field name="patient_name" class="java.lang.String"/>
+	<field name="patient_surname" class="java.lang.String"/>
+	<field name="patient_tc" class="java.lang.String"/>
+	<field name="patient_tel" class="java.lang.String"/>
+	<field name="patient_birthday" class="java.sql.Date"/>
+	<field name="medicine_medicineId" class="java.lang.Integer"/>
+	<field name="medicine_name" class="java.lang.String"/>
+	<field name="medicine_barcode" class="java.lang.String"/>
+	<field name="medicine_expire_date" class="java.sql.Date"/>
+	<field name="medicine_producer" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="79" uuid="d51695a9-3afc-4a49-b750-90d7273f046d"/>
+				<textElement>
+					<font size="48"/>
+				</textElement>
+				<text><![CDATA[Patient Receipt Report]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="69" width="100" height="20" uuid="54453ab4-fcf1-41cc-8674-95c6c5ee5480"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Birthday]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="69" width="100" height="20" uuid="56b019b3-34c0-4cf9-8d5e-f064407bea78"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TC]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="41" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="226" height="35" uuid="0f4558fa-8e98-4877-81bb-b2c5ce13a2cd"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patient_name} +" " + $F{patient_surname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="0" width="100" height="30" uuid="2291dfae-eeed-48ad-8064-83377425e768"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patient_birthday}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="2" width="100" height="30" uuid="77168e33-05b9-4f5d-82c7-7ee1d30b6fd1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["*********"+$F{patient_tc}.substring( 9, 11 )]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="0" width="100" height="20" uuid="43f49497-aeb0-4d38-bafe-a3f9a4c868aa"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Medicine name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="100" height="20" uuid="9923e044-d877-4326-bed4-6ec63ffbc9f8"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Start Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="0" width="100" height="20" uuid="948df442-5081-47f2-831d-1ff07aa74589"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="0" width="100" height="20" uuid="42f1808c-581a-4a7e-b733-d59da4bfda1a"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Daily]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="0" width="100" height="20" uuid="6f4f5d55-0b99-41a2-bc0b-fe23b7deca63"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Treatment Day(s)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="20" y="0" width="100" height="20" uuid="bfb4709a-f9c6-4336-9cc9-944b4456dc81"/>
+				<textFieldExpression><![CDATA[$F{medicine_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="0" width="100" height="20" uuid="8c9e0caa-cba5-4265-8067-42187b93adef"/>
+				<textFieldExpression><![CDATA[$F{medicineofpatient_startDate}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="0" width="100" height="20" uuid="c218808e-ef04-4b73-8e25-12bce843bbd8"/>
+				<textFieldExpression><![CDATA[$F{medicineofpatient_quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="0" width="100" height="20" uuid="e70c756b-cd70-4e7e-bb34-5ab8fc760599"/>
+				<textFieldExpression><![CDATA[$F{medicineofpatient_daily}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="0" width="100" height="20" uuid="b00ce0d5-b6b2-47f5-a161-d21dab15edb5"/>
+				<textFieldExpression><![CDATA[$F{medicineofpatient_treatmentDays}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

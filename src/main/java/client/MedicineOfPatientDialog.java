@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-public class MedicineOfPatientDialog  {
+public class MedicineOfPatientDialog {
 
 	private JFrame frmAddMedceFor;
 	private JTextField quantityTextField;
@@ -40,9 +40,7 @@ public class MedicineOfPatientDialog  {
 
 	public MedicineOfPatientDialog(PatientDTO patient) {
 		this.patient = patient;
-
 		initialize();
-
 	}
 
 	private void initialize() {
@@ -72,15 +70,8 @@ public class MedicineOfPatientDialog  {
 			}
 		});
 		MedicineCombobox mc = new MedicineCombobox();
-		
-		/*for (MedicineDTO medicineObject : mc.ListMedicine()) {
-			mc.addItem(medicineObject);
-		}*/
-		//mc.setItemList();
 		mc.setBounds(new Rectangle(121, 64, 201, 36));
 		frmAddMedceFor.getContentPane().add(mc);
-		
-		
 
 		JLabel lblMedicineName = new JLabel("Medicine Name:");
 		lblMedicineName.setBounds(12, 63, 97, 36);
@@ -120,7 +111,7 @@ public class MedicineOfPatientDialog  {
 		JButton btnSave = new JButton("SAVE");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(mc.getSelectedItem().toString() != "select" || tmpString==null) {
+				if (mc.getSelectedItem().toString() != "select" && tmpString != null && !quantityTextField.getText().isEmpty() && !dailyTextField.getText().isEmpty() && !treatmentTextField.getText().isEmpty()) {
 					SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy");
 					String a = tmpString;
 
@@ -138,9 +129,18 @@ public class MedicineOfPatientDialog  {
 					MedicineOfPatientManager save = new MedicineOfPatientManager();
 					save.SetMedicineOfPatient(quantityTextField.getText(), treatmentTextField.getText(),
 							dailyTextField.getText(), date, patient.getId(), medicine.getId());
-				}
-				else
-					JOptionPane.showMessageDialog(frmAddMedceFor, "Please select a medicine","Error" , 0);
+					JOptionPane.showMessageDialog(null, "DONE!", "DONE!", 1);
+				} 
+				else if(mc.getSelectedItem().toString() == "select")
+					JOptionPane.showMessageDialog(frmAddMedceFor, "Please select a medicine", "Error", 0);
+				else if(tmpString == null)
+					JOptionPane.showMessageDialog(frmAddMedceFor, "Please select date correctly", "Error", 0);
+				else if(quantityTextField.getText().isEmpty())
+					JOptionPane.showMessageDialog(frmAddMedceFor, "Please enter quantity", "Error", 0);
+				else if(dailyTextField.getText().isEmpty())
+					JOptionPane.showMessageDialog(frmAddMedceFor, "Please enter daily section", "Error", 0);
+				else if(treatmentTextField.getText().isEmpty())
+					JOptionPane.showMessageDialog(frmAddMedceFor, "Please enter treatment days", "Error", 0);
 				
 
 			}

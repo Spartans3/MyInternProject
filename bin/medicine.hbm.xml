@@ -5,25 +5,25 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-<class name= "object.MedicineDTO" table ="medicine">
+	<class name="object.MedicineDTO" table="medicine">
 
-	<id name = "id" type = "int" column= "medicineId">
-		<generator class="identity"></generator>
-	</id>
-	
-	<property name ="name" column= "name" type="string" />
-	<property name ="barcode" column= "barcode" type="string" />
-	<property name="expire_date" column= "expire_date" type= "date" />
-	<property name ="producer" column= "producer" type="string" ></property>
-	
-	<set name="medicineOfPatient" table="medicineofpatient" inverse="true" 
-	lazy="true" fetch="select">
-		<key>
-			<column name="pk.medicine" not-null="true"></column>
-		</key>
-		<one-to-many class="object.MedicineOfPatientDTO"/>
-	</set>
+		<id name="id" type="int" column="medicineId">
+			<generator class="identity"></generator>
+		</id>
+
+		<property name="name" column="name" type="string" />
+		<property name="barcode" column="barcode" type="string" />
+		<property name="expire_date" column="expire_date" type="date" />
+		<property name="producer" column="producer" type="string"></property>
+
+		<set name="medicineOfPatient" table="medicineofpatient"
+			inverse="true" lazy="true" fetch="select">
+			<key>
+				<column name="pk.medicine" not-null="true"></column>
+			</key>
+			<one-to-many class="object.MedicineOfPatientDTO" />
+		</set>
 
 
-</class>
+	</class>
 </hibernate-mapping>

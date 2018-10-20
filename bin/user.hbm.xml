@@ -5,16 +5,14 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-<class name= "object.UserDTO" table ="user">
+	<class name="object.UserDTO" table="user">
 
-	<id name = "id" type = "int" column= "iduser">
-		<generator class="native"></generator>
-	</id>
-	
-	<property name ="username" column= "username" type="string" />
-	<property name ="password" column= "password" type="string" />
-
-
-
-</class>
+		<id name="id" type="int" column="iduser">
+			<generator class="native"></generator>
+		</id>
+		
+		<property name="username" column="username" type="string" />
+		<property name="password" column="password" type="string" />
+		
+	</class>
 </hibernate-mapping>

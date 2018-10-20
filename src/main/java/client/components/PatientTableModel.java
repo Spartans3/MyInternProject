@@ -1,75 +1,82 @@
 package client.components;
 
-
-
-import java.awt.Color;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
+import org.hibernate.Session;
 
-import businessClass.PatientManager;
+import dbConnection.HibernateUtil;
 import object.PatientDTO;
 
-public class PatientTableModel extends DefaultTableModel{
+public class PatientTableModel extends AbstractTableModel {
+	private static final long serialVersionUID = 1L;
+	Session session = HibernateUtil.getSession();
 	
-	PatientManager manager = new PatientManager();
-	
+	private List<PatientDTO> listData = getPatientData();
+	private String[] columnNames = { "Name", "Surname", "TC", "Tel", "Birthday" };
+	SimpleDateFormat format = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+
 
 	
 	public PatientTableModel() {
 		
-		
-		getTableList();
-		
+	}
+
+	private List<PatientDTO> getPatientData() {
+		return session.createQuery("from PatientDTO where status=1").list();
+	}
+
+	public boolean isCellEditable(int row, int col) {
+		return false;
+	}
+
+	@Override
+	public int getColumnCount() {
+		return 5;
+	}
+
+	@Override
+	public int getRowCount() {
+		return listData.size();
 	}
 	
 	
-public List<PatientDTO> getTableList() {
-	List<PatientDTO> tableData = manager.ListPatients();
 
-	Iterator it = tableData.listIterator();
-	List<String[]> values = new ArrayList<String[]>();
-	List<String> columns = new ArrayList<String>();
-	
+	@Override
+	public Object getValueAt(int row, int col) {
+		PatientDTO patient = listData.get(row);
 
-	columns.add("Name");
-	columns.add("Surname");
-	columns.add("Tc");
-	columns.add("Tel");
-	columns.add("birthday");
-	SimpleDateFormat format = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+		switch (col) {
+		case 0:
+			return patient.getName();
+		case 1:
+			return patient.getSurname();
+		case 2:
+			return patient.getTc();
+		case 3:
+			return patient.getTel();
+		case 4:
+			String birthday = format.format(patient.getBirthday());
+			return birthday.substring(0, 10);
+		default:
+			return "";
 
-	while (it.hasNext()) {
-		PatientDTO pati = (PatientDTO) it.next();
-		String data1 = pati.getName();
-		String data2 = pati.getSurname();
-		String data3 = String.valueOf(pati.getTc());
-		String data4 = String.valueOf(pati.getTel());
+		}
 
-		String birthday = format.format(pati.getBirthday());
-		birthday = birthday.substring(0, 10);
-
-		values.add(new String[] { data1, data2, data3, data4, birthday });
 	}
-	setDataVector(values.toArray(new Object[][] {}), columns.toArray());
-	return tableData;
+
+	public void setColumnNames(String[] columnNames) {
+		this.columnNames = columnNames;
 	}
-	
 
+	@Override
+	public String getColumnName(int col) {
+		return columnNames[col];
+	}
 
-
-
-
-
-
-
-
+	public void setList() {
+		listData = getPatientData();
+		fireTableDataChanged();
+	}
 
 }
-
-

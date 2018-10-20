@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
-import dbConnection.HibernateUtil;
-
 public class DataLabelFormatter extends AbstractFormatter {
 
 	private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-M-yyy");
