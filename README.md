@@ -1,7 +1,7 @@
 # Intern Project 
 ## Hospital Automation(Medicines for Patients And Reporting)
 
-### Things That Used
+### Techs That Used
 
 - Java
 - Jasper Reports
